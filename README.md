@@ -1,10 +1,8 @@
-
-[![Build Status](https://travis-ci.com/rmanguinho/advanced-node.svg?branch=master)](https://travis-ci.com/rmanguinho/advanced-node)
 [![Coverage Status](https://coveralls.io/repos/github/robertoakang/advanced-clean-ts-api/badge.svg?branch=master)](https://coveralls.io/github/robertoakang/advanced-clean-ts-api?branch=master)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 
-# **Advanced Node**
+# **ADVANCED CLEAN NODE API WITH TYPESCRIPT**
 
 ---
 
@@ -13,11 +11,12 @@
 Essa API faz parte do treinamento do professor Rodrigo Manguinho (Mango) na Udemy.
 
 O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem definida e desacoplada, utilizando TDD (programação orientada a testes) como metodologia de trabalho, Clean Architecture para fazer a distribuição de responsabilidades em camadas, sempre seguindo os princípios do SOLID e, sempre que possível, aplicando Design Patterns para resolver alguns problemas comuns.
-<br /><br />
+`<br /><br />`
 
 <br />
 
 > ## Princípios
+
 * Single Responsibility
 * Open Closed
 * Liskov Substitution
@@ -31,6 +30,7 @@ O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem 
 * Small Commits
 
 > ## Design Patterns
+
 * Factory
 * Adapter
 * Composite
@@ -46,6 +46,7 @@ O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem 
 * Proxy
 
 > ## Code Smells (Anti-Patterns)
+
 * Blank Lines
 * Comments
 * Data Clumps
@@ -63,6 +64,7 @@ O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem 
 * Speculative Generality
 
 > ## Metodologias e Designs
+
 * TDD
 * Clean Architecture
 * DDD
@@ -74,6 +76,7 @@ O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem 
 * Spike (Agile)
 
 > ## Bibliotecas e Ferramentas
+
 * NPM
 * Typescript
 * Git
@@ -104,6 +107,7 @@ O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem 
 * Ts-Node-Dev
 
 > ## Features do Typescript
+
 * POO Avançado
 * Strict Mode
 * Interface
@@ -115,6 +119,7 @@ O objetivo do treinamento é mostrar como criar uma API com uma arquitetura bem 
 * Build
 
 > ## Features de Testes
+
 * Testes Unitários
 * Testes de Integração
 * Cobertura de Testes
