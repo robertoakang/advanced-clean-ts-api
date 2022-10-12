@@ -31,7 +31,6 @@
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
     "test:coverage": "npm test -- --coverage",
-    "test:coveralls": "npm run test:coverage && coveralls < coverage/lcov.info",
     "prepare": "husky install"
   },
   "devDependencies": {

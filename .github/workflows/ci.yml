@@ -16,11 +16,11 @@ jobs:
       with:
         node-version: 16.x
 
-    - name: npm install, lint:ci, test:coveralls
+    - name: npm install, lint:ci, test:coverage
       run: |
         npm install
         npm run lint:ci
-        npm run lint:ci
+        npm run test:coverage
 
     - name: Coveralls
       uses: coverallsapp/github-action@master
