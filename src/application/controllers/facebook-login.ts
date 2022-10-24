@@ -1,4 +1,3 @@
-import { RequiredFieldError } from '@/application/errors'
 import { badRequest, HttpResponse, ok, serverError, unauthorized } from '@/application/helpers'
 import { IFacebookAuthentication } from '@/domain/features'
 import { AccessToken } from '@/domain/models'
@@ -19,7 +18,7 @@ export class FacebookLoginController {
     try {
       const error = this.validate(httpRequest)
       if (error !== undefined) {
-        return badRequest(new RequiredFieldError('token'))
+        return badRequest(error)
       }
       const accessToken = await this.facebookAuthentication.perform({ token: httpRequest.token })
       if (accessToken instanceof AccessToken) {
