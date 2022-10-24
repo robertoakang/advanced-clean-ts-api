@@ -1,7 +1,8 @@
-import { badRequest, HttpResponse, ok, serverError, unauthorized } from '@/application/helpers'
+import { Controller } from '@/application/controllers'
+import { HttpResponse, ok, unauthorized } from '@/application/helpers'
+import { IValidator, ValidationBuilder as builder } from '@/application/validation'
 import { IFacebookAuthentication } from '@/domain/features'
 import { AccessToken } from '@/domain/models'
-import { ValidationBuilder, ValidationComposite } from '@/application/validation'
 
 type HttpRequest = {
   token: string
@@ -11,31 +12,21 @@ type Model = Error | {
   accessToken: string
 }
 
-export class FacebookLoginController {
-  constructor (private readonly facebookAuthentication: IFacebookAuthentication) {}
-
-  async handle (httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
-    try {
-      const error = this.validate(httpRequest)
-      if (error !== undefined) {
-        return badRequest(error)
-      }
-      const accessToken = await this.facebookAuthentication.perform({ token: httpRequest.token })
-      if (accessToken instanceof AccessToken) {
-        return ok({
-          accessToken: accessToken.value
-        })
-      } else {
-        return unauthorized()
-      }
-    } catch (error: any) {
-      return serverError(error)
-    }
+export class FacebookLoginController extends Controller {
+  constructor (private readonly facebookAuthentication: IFacebookAuthentication) {
+    super()
   }
 
-  private validate (httpRequest: HttpRequest): Error | undefined {
-    return new ValidationComposite([
-      ...ValidationBuilder.of({ value: httpRequest.token, fieldName: 'token' }).required().build()
-    ]).validate()
+  async perform (httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
+    const accessToken = await this.facebookAuthentication.perform({ token: httpRequest.token })
+    return accessToken instanceof AccessToken
+      ? ok({ accessToken: accessToken.value })
+      : unauthorized()
+  }
+
+  override buildValidators (httpRequest: HttpRequest): IValidator[] {
+    return [
+      ...builder.of({ value: httpRequest.token, fieldName: 'token' }).required().build()
+    ]
   }
 }
