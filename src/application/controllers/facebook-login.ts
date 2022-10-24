@@ -17,16 +17,16 @@ export class FacebookLoginController extends Controller {
     super()
   }
 
-  async perform (httpRequest: HttpRequest): Promise<HttpResponse<Model>> {
-    const accessToken = await this.facebookAuthentication.perform({ token: httpRequest.token })
+  async perform ({ token }: HttpRequest): Promise<HttpResponse<Model>> {
+    const accessToken = await this.facebookAuthentication.perform({ token })
     return accessToken instanceof AccessToken
       ? ok({ accessToken: accessToken.value })
       : unauthorized()
   }
 
-  override buildValidators (httpRequest: HttpRequest): IValidator[] {
+  override buildValidators ({ token }: HttpRequest): IValidator[] {
     return [
-      ...builder.of({ value: httpRequest.token, fieldName: 'token' }).required().build()
+      ...builder.of({ value: token, fieldName: 'token' }).required().build()
     ]
   }
 }
