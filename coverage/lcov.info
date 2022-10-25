@@ -183,7 +183,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src/domain/models/access-token.ts
+SF:src/domain/entities/access-token.ts
 FN:2,(anonymous_0)
 FN:4,(anonymous_1)
 FNF:2
@@ -199,7 +199,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src/domain/models/facebook-account.ts
+SF:src/domain/entities/facebook-account.ts
 FN:18,(anonymous_0)
 FNF:1
 FNH:1
