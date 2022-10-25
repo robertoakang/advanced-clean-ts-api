@@ -1,4 +1,4 @@
-import { ITokenGenerator } from '@/data/contracts/crypto'
+import { ITokenGenerator } from '@/domain/contracts/crypto'
 
 import { sign } from 'jsonwebtoken'
 
