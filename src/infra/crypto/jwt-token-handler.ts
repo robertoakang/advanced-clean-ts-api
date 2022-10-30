@@ -5,7 +5,7 @@ import { sign } from 'jsonwebtoken'
 type Params = ITokenGenerator.Params
 type Result = ITokenGenerator.Result
 
-export class JwtTokenGenerator implements ITokenGenerator {
+export class JwtTokenHandler implements ITokenGenerator {
   constructor (private readonly secret: string) {}
 
   async generateToken ({ expirationInMs, key }: Params): Promise<Result> {
