@@ -1,8 +1,8 @@
 export interface IHttpGetClient {
-  get: <T = any> (args: IHttpGetClient.Params) => Promise<T>
+  get: <T = any> (args: IHttpGetClient.Input) => Promise<T>
 }
 export namespace IHttpGetClient {
-  export type Params = {
+  export type Input = {
     url: string
     params: object
   }

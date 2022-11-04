@@ -1,31 +1,31 @@
 export interface ILoadUserAccountRepository {
-  load: (params: ILoadUserAccountRepository.Params) => Promise<ILoadUserAccountRepository.Result>
+  load: (params: ILoadUserAccountRepository.Input) => Promise<ILoadUserAccountRepository.Output>
 }
 
 export namespace ILoadUserAccountRepository {
-  export type Params = {
+  export type Input = {
     email: string
   }
 
-  export type Result = undefined | {
+  export type Output = undefined | {
     id: string
     name?: string
   }
 }
 
 export interface ISaveFacebookAccountRepository {
-  saveWithFacebook: (params: ISaveFacebookAccountRepository.Params) => Promise<ISaveFacebookAccountRepository.Result>
+  saveWithFacebook: (params: ISaveFacebookAccountRepository.Input) => Promise<ISaveFacebookAccountRepository.Output>
 }
 
 export namespace ISaveFacebookAccountRepository {
-  export type Params = {
+  export type Input = {
     id?: string
     email: string
     name: string
     facebookId: string
   }
 
-  export type Result = {
+  export type Output = {
     id: string
   }
 }
