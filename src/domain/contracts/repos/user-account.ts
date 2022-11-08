@@ -1,5 +1,5 @@
 export interface ILoadUserAccountRepository {
-  load: (params: ILoadUserAccountRepository.Input) => Promise<ILoadUserAccountRepository.Output>
+  load: (input: ILoadUserAccountRepository.Input) => Promise<ILoadUserAccountRepository.Output>
 }
 
 export namespace ILoadUserAccountRepository {
@@ -14,7 +14,7 @@ export namespace ILoadUserAccountRepository {
 }
 
 export interface ISaveFacebookAccountRepository {
-  saveWithFacebook: (params: ISaveFacebookAccountRepository.Input) => Promise<ISaveFacebookAccountRepository.Output>
+  saveWithFacebook: (input: ISaveFacebookAccountRepository.Input) => Promise<ISaveFacebookAccountRepository.Output>
 }
 
 export namespace ISaveFacebookAccountRepository {

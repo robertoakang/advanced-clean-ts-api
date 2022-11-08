@@ -1,5 +1,5 @@
 export interface ILoadFacebookUserApi {
-  loadUser: (params: ILoadFacebookUserApi.Input) => Promise<ILoadFacebookUserApi.Output>
+  loadUser: (input: ILoadFacebookUserApi.Input) => Promise<ILoadFacebookUserApi.Output>
 }
 
 export namespace ILoadFacebookUserApi {
