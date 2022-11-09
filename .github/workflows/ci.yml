@@ -1,5 +1,4 @@
 on: ["push", "pull_request"]
-
 name: CI Coveralls
 
 jobs:
@@ -21,7 +20,18 @@ jobs:
         npm install
         npm run lint:ci
         npm run test:coverage
-
+      env:
+        PORT: ${{ secrets.PORT }}
+        FB_CLIENT_ID: ${{ secrets.FB_CLIENT_ID }}
+        FB_CLIENT_SECRET: ${{ secrets.FB_CLIENT_SECRET }}
+        FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        TYPEORM_CONNECTION: ${{ secrets.TYPEORM_CONNECTION }}
+        TYPEORM_HOST: ${{ secrets.TYPEORM_HOST }}
+        TYPEORM_PASSWORD: ${{ secrets.TYPEORM_PASSWORD }}
+        TYPEORM_DATABASE: ${{ secrets.TYPEORM_DATABASE }}
+        TYPEORM_PORT: ${{ secrets.TYPEORM_PORT }}
+        TYPEORM_ENTITIES: ${{ secrets.TYPEORM_ENTITIES }}
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:
