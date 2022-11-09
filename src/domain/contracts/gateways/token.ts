@@ -1,6 +1,6 @@
 
 export interface ITokenGenerator {
-  generateToken: (input: ITokenGenerator.Input) => Promise<ITokenGenerator.Output>
+  generate: (input: ITokenGenerator.Input) => Promise<ITokenGenerator.Output>
 }
 
 export namespace ITokenGenerator {
@@ -13,7 +13,7 @@ export namespace ITokenGenerator {
 }
 
 export interface ITokenValidator {
-  validateToken: (input: ITokenValidator.Input) => Promise<ITokenValidator.Output>
+  validate: (input: ITokenValidator.Input) => Promise<ITokenValidator.Output>
 }
 
 export namespace ITokenValidator {
