@@ -1,5 +1,5 @@
 import { ILoadFacebookUser } from '@/domain/contracts/gateways'
-import { IHttpGetClient } from '@/infra/http'
+import { IHttpGetClient } from '@/infra/gateways'
 
 type AppToken = {
   access_token: string

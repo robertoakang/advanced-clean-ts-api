@@ -399,7 +399,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src/infra/postgres/entities/user.ts
+SF:src/infra/repos/postgres/entities/user.ts
 FNF:0
 FNH:0
 DA:1,3
@@ -414,7 +414,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:src/infra/postgres/repos/user-account.ts
+SF:src/infra/repos/postgres/user-account.ts
 FN:11,(anonymous_0)
 FN:22,(anonymous_1)
 FNF:2
