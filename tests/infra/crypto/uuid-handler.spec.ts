@@ -4,9 +4,9 @@ import { v4 } from 'uuid'
 
 jest.mock('uuid')
 
-export class UUIDHandler {
-  uuid ({ key }: IUUIDGenerator.Input): void {
-    v4()
+export class UUIDHandler implements IUUIDGenerator {
+  uuid ({ key }: IUUIDGenerator.Input): IUUIDGenerator.Output {
+    return `${key}_${v4()}`
   }
 }
 
@@ -19,11 +19,12 @@ describe('UUIDHandler', () => {
     expect(v4).toHaveBeenCalledTimes(1)
   })
 
-  it('Should call uuid.v4', () => {
+  it('Should return correct uuid', () => {
+    jest.mocked(v4).mockReturnValueOnce('any_uuid')
     const sut = new UUIDHandler()
 
-    sut.uuid({ key: 'any_key' })
+    const uuid = sut.uuid({ key: 'any_key' })
 
-    expect(v4).toHaveBeenCalledTimes(1)
+    expect(uuid).toBe('any_key_any_uuid')
   })
 })
