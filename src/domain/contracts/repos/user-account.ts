@@ -3,9 +3,7 @@ export interface ILoadUserAccount {
 }
 
 export namespace ILoadUserAccount {
-  export type Input = {
-    email: string
-  }
+  export type Input = { email: string }
 
   export type Output = undefined | {
     id: string
@@ -25,7 +23,5 @@ export namespace ISaveFacebookAccount {
     facebookId: string
   }
 
-  export type Output = {
-    id: string
-  }
+  export type Output = { id: string }
 }
