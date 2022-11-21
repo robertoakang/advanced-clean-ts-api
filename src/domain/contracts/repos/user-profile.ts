@@ -3,13 +3,14 @@ export interface ISaveUserPicture {
 }
 
 export namespace ISaveUserPicture {
-  export type Input = { pictureUrl?: string }
+  export type Input = { pictureUrl?: string, initials?: string }
 }
 
 export interface ILoadUserProfile {
-  load: (input: ILoadUserProfile.Input) => Promise<void>
+  load: (input: ILoadUserProfile.Input) => Promise<ILoadUserProfile.Output>
 }
 
 export namespace ILoadUserProfile {
   export type Input = { id: string }
+  export type Output = { name?: string }
 }
