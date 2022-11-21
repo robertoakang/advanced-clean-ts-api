@@ -1,4 +1,4 @@
-import { IUploadFile, IUUIDGenerator } from '@/domain/contracts/gateways'
+import { IUploadFile, IUUIDGenerator, IDeleteFile } from '@/domain/contracts/gateways'
 import { ILoadUserProfile, ISaveUserPicture } from '@/domain/contracts/repos'
 import { UserProfile } from '@/domain/entities'
 import { ChangeProfilePicture, setupChangeProfilePicture } from '@/domain/use-cases'
@@ -10,7 +10,7 @@ jest.mock('@/domain/entities/user-profile')
 describe('ChangeProfilePicture', () => {
   let uuid: string
   let file: Buffer
-  let fileStorage: MockProxy<IUploadFile>
+  let fileStorage: MockProxy<IUploadFile & IDeleteFile>
   let crypto: MockProxy<IUUIDGenerator>
   let userProfileRepo: MockProxy<ISaveUserPicture & ILoadUserProfile>
   let sut: ChangeProfilePicture
@@ -76,6 +76,17 @@ describe('ChangeProfilePicture', () => {
     expect(result).toMatchObject({
       pictureUrl: 'any_url',
       initials: 'any_initials'
+    })
+  })
+
+  it('Should call IDeleteFile when file exists and ISaveUserPicture throws', async () => {
+    userProfileRepo.savePicture.mockRejectedValueOnce(new Error())
+
+    const promise = sut({ id: 'any_id', file })
+
+    promise.catch(() => {
+      expect(fileStorage.delete).toHaveBeenCalledWith({ key: uuid })
+      expect(fileStorage.delete).toHaveBeenCalledTimes(1)
     })
   })
 })
