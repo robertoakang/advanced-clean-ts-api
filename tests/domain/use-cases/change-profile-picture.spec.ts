@@ -111,11 +111,20 @@ describe('ChangeProfilePicture', () => {
     await expect(promise).rejects.toThrow(error)
   })
 
-  it('Should rethrow if UploadFile throws', async () => {
+  it('Should rethrow if IUploadFile throws', async () => {
     const error = new Error('upload_error')
     fileStorage.upload.mockRejectedValueOnce(error)
 
     const promise = sut({ id: 'any_id', file })
+
+    await expect(promise).rejects.toThrow(error)
+  })
+
+  it('Should rethrow if ILoadUserProfile throws', async () => {
+    const error = new Error('load_error')
+    userProfileRepo.load.mockRejectedValueOnce(error)
+
+    const promise = sut({ id: 'any_id', file: undefined })
 
     await expect(promise).rejects.toThrow(error)
   })
