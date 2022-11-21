@@ -11,7 +11,7 @@
 2. ✅ Enviar uma chave única para o FileStorage para evitar que sobrescreva alguma imagem que já existe
 3. ✅ Atualizar os dados do usuário com a url da foto retornada pelo FileStorage
 4. ✅ Limpar o campo de iniciais do nome do usuário
-5. ❌ Retornar a url da foto e as iniciais do usuário
+5. ✅ Retornar a url da foto e as iniciais do usuário
 
 > ## Fluxo alternativo 1: Usuário removeu sua foto
 
@@ -25,7 +25,7 @@
 
 > ## Fluxo alternativo 1.2: Usuário tem nome com apenas uma letra
 
-4.  Atualizar o campo de iniciais do usuário com a única letra
+4. Atualizar o campo de iniciais do usuário com a única letra
 
 > ## Fluxo alternativo 1.3: Usuário não tem nome
 
@@ -33,5 +33,5 @@
 
 > ## Fluxo de exceção: Erro ao atualizar foto do usuário
 
-1. ❌ Apagar a foto criada no FileStorage
-2. ❌ Repassar o mesmo erro recebido
+1. ✅ Apagar a foto criada no FileStorage
+2. ✅ Repassar o mesmo erro recebido
