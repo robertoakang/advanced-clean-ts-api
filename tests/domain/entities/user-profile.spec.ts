@@ -57,7 +57,17 @@ describe('UserProfile', () => {
     })
   })
 
-  it('Should create initials with first letter when pictureUrl is not provided', () => {
+  it('Should create with empty initials when pictureUrl is not provided and name is empty', () => {
+    sut.setPicture({ name: '' })
+
+    expect(sut).toEqual({
+      id: 'any_id',
+      pictureUrl: undefined,
+      initials: undefined
+    })
+  })
+
+  it('Should create with empty initials when pictureUrl and name are provided', () => {
     sut.setPicture({})
 
     expect(sut).toEqual({
