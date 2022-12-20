@@ -16,5 +16,5 @@ export interface ILoadUserProfile {
 
 export namespace ILoadUserProfile {
   export type Input = { id: string }
-  export type Output = { name?: string }
+  export type Output = { name?: string } | undefined
 }
