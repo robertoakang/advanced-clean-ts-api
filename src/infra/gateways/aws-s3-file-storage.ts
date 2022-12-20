@@ -1,8 +1,8 @@
-import { IUploadFile } from '@/domain/contracts/gateways'
+import { IDeleteFile, IUploadFile } from '@/domain/contracts/gateways'
 
 import { config, S3 } from 'aws-sdk'
 
-export class AwsS3FileStorage implements IUploadFile {
+export class AwsS3FileStorage implements IUploadFile, IDeleteFile {
   constructor (
     private readonly accessKey: string,
     private readonly secretKey: string,
@@ -26,5 +26,13 @@ export class AwsS3FileStorage implements IUploadFile {
     }).promise()
 
     return `https://${this.bucket}.s3.amazonaws.com/${encodeURIComponent(key)}`
+  }
+
+  async delete ({ key }: IDeleteFile.Input): Promise<void> {
+    const s3 = new S3()
+    await s3.deleteObject({
+      Bucket: this.bucket,
+      Key: key
+    }).promise()
   }
 }
