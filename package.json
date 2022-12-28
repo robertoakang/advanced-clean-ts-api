@@ -35,7 +35,8 @@
     "test:watch": "npm t -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
     "test:coverage": "npm test -- --coverage",
-    "test:fb-api": "npm test -- -c ./jest.integration.config.js tests/external/facebook-api.test.ts"
+    "test:fb-api": "npm test -- -c ./jest.integration.config.js tests/external/facebook-api.test.ts",
+    "test:s3": "npm test -- -c ./jest.integration.config.js tests/external/aws-s3-file-storage.test.ts"
   },
   "devDependencies": {
     "@jest-mock/express": "^2.0.1",
