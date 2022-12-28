@@ -3,7 +3,7 @@ export interface IUploadFile {
 }
 
 export namespace IUploadFile {
-  export type Input = { file: Buffer, key: string }
+  export type Input = { file: Buffer, fileName: string }
   export type Output = string
 }
 
@@ -12,5 +12,5 @@ export interface IDeleteFile {
 }
 
 export namespace IDeleteFile {
-  export type Input = { key: string }
+  export type Input = { fileName: string }
 }

@@ -1,15 +1,17 @@
-import { IUploadFile, IUUIDGenerator, IDeleteFile } from '@/domain/contracts/gateways'
+import { IDeleteFile, IUUIDGenerator, IUploadFile } from '@/domain/contracts/gateways'
 import { ILoadUserProfile, ISaveUserPicture } from '@/domain/contracts/repos'
 import { UserProfile } from '@/domain/entities'
 import { ChangeProfilePicture, setupChangeProfilePicture } from '@/domain/use-cases'
 
-import { mock, MockProxy } from 'jest-mock-extended'
+import { MockProxy, mock } from 'jest-mock-extended'
 
 jest.mock('@/domain/entities/user-profile')
 
 describe('ChangeProfilePicture', () => {
   let uuid: string
-  let file: Buffer
+  let file: { buffer: Buffer, mimeType: string }
+  let buffer: Buffer
+  let mimeType: string
   let fileStorage: MockProxy<IUploadFile & IDeleteFile>
   let crypto: MockProxy<IUUIDGenerator>
   let userProfileRepo: MockProxy<ISaveUserPicture & ILoadUserProfile>
@@ -17,7 +19,9 @@ describe('ChangeProfilePicture', () => {
 
   beforeAll(() => {
     uuid = 'any_unique_id'
-    file = Buffer.from('any_buffer')
+    buffer = Buffer.from('any_buffer')
+    mimeType = 'image/png'
+    file = { buffer, mimeType }
     fileStorage = mock()
     crypto = mock()
     userProfileRepo = mock()
@@ -31,9 +35,16 @@ describe('ChangeProfilePicture', () => {
   })
 
   it('Should call IUploadFile with correct input', async () => {
-    await sut({ id: 'any_id', file })
+    await sut({ id: 'any_id', file: { buffer, mimeType: 'image/png' } })
 
-    expect(fileStorage.upload).toHaveBeenCalledWith({ file, key: uuid })
+    expect(fileStorage.upload).toHaveBeenCalledWith({ file: buffer, fileName: `${uuid}.png` })
+    expect(fileStorage.upload).toHaveBeenCalledTimes(1)
+  })
+
+  it('Should call IUploadFile with correct input', async () => {
+    await sut({ id: 'any_id', file: { buffer, mimeType: 'image/jpeg' } })
+
+    expect(fileStorage.upload).toHaveBeenCalledWith({ file: buffer, fileName: `${uuid}.jpeg` })
     expect(fileStorage.upload).toHaveBeenCalledTimes(1)
   })
 
@@ -94,7 +105,7 @@ describe('ChangeProfilePicture', () => {
     const promise = sut({ id: 'any_id', file })
 
     promise.catch(() => {
-      expect(fileStorage.delete).toHaveBeenCalledWith({ key: uuid })
+      expect(fileStorage.delete).toHaveBeenCalledWith({ fileName: uuid })
       expect(fileStorage.delete).toHaveBeenCalledTimes(1)
     })
   })
