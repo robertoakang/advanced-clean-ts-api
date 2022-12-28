@@ -1,4 +1,4 @@
-on: ["push", "pull_request"]
+on: ["push"]
 name: CI Coveralls
 
 jobs:
@@ -32,6 +32,10 @@ jobs:
         TYPEORM_DATABASE: ${{ secrets.TYPEORM_DATABASE }}
         TYPEORM_PORT: ${{ secrets.TYPEORM_PORT }}
         TYPEORM_ENTITIES: ${{ secrets.TYPEORM_ENTITIES }}
+        TYPEORM_USERNAME: ${{ secrets.TYPEORM_USERNAME }}
+        AWS_S3_ACCESS_KEY: ${{ secrets.AWS_S3_ACCESS_KEY }}
+        AWS_S3_SECRET: ${{ secrets.AWS_S3_SECRET }}
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
     - name: Coveralls
       uses: coverallsapp/github-action@master
       with:

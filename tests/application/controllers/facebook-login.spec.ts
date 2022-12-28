@@ -1,6 +1,6 @@
-import { FacebookLoginController } from '@/application/controllers'
+import { Controller, FacebookLoginController } from '@/application/controllers'
 import { UnauthorizedError } from '@/application/errors'
-import { RequiredStringValidator } from '@/application/validation'
+import { RequiredString } from '@/application/validation'
 import { AuthenticationError } from '@/domain/entities/errors'
 
 describe('FacebookLoginController', () => {
@@ -9,20 +9,24 @@ describe('FacebookLoginController', () => {
   let token: string
 
   beforeAll(() => {
+    token = 'any_token'
     facebookAuth = jest.fn()
     facebookAuth.mockResolvedValue({ accessToken: 'any_value' })
-    token = 'any_token'
   })
 
   beforeEach(() => {
     sut = new FacebookLoginController(facebookAuth)
   })
 
+  it('Should extend Controller', async () => {
+    expect(sut).toBeInstanceOf(Controller)
+  })
+
   it('Should build validators correctly', async () => {
     const validators = sut.buildValidators({ token })
 
     expect(validators).toEqual([
-      new RequiredStringValidator('any_token', 'token')
+      new RequiredString('any_token', 'token')
     ])
   })
 
