@@ -1,12 +1,14 @@
-import { createConnection, getConnectionManager } from 'typeorm'
+import { createConnection, getConnection, getConnectionManager } from 'typeorm'
 
 jest.mock('typeorm', () => ({
   Entity: jest.fn(),
   PrimaryGeneratedColumn: jest.fn(),
   Column: jest.fn(),
   createConnection: jest.fn(),
+  getConnection: jest.fn(),
   getConnectionManager: jest.fn()
 }))
+
 export class PgConnection {
   private static instance?: PgConnection
 
@@ -18,7 +20,9 @@ export class PgConnection {
   }
 
   async connect (): Promise<void> {
-    const connection = await createConnection()
+    const connection = getConnectionManager().has('default')
+      ? getConnection()
+      : await createConnection()
     connection.createQueryRunner()
   }
 }
@@ -27,11 +31,14 @@ describe('PgConnection', () => {
   let getConnectionManagerSpy: jest.Mock
   let createQueryRunnerSpy: jest.Mock
   let createConnectionSpy: jest.Mock
+  let hasSpy: jest.Mock
+  let getConnectionSpy: jest.Mock
   let sut: PgConnection
 
   beforeAll(() => {
+    hasSpy = jest.fn().mockReturnValue(true)
     getConnectionManagerSpy = jest.fn().mockReturnValue({
-      has: jest.fn().mockResolvedValue(false)
+      has: hasSpy
     })
     jest.mocked(getConnectionManager).mockImplementation(getConnectionManagerSpy)
     createQueryRunnerSpy = jest.fn()
@@ -39,6 +46,10 @@ describe('PgConnection', () => {
       createQueryRunner: createQueryRunnerSpy
     })
     jest.mocked(createConnection).mockImplementation(createConnectionSpy)
+    getConnectionSpy = jest.fn().mockReturnValue({
+      createQueryRunner: createQueryRunnerSpy
+    })
+    jest.mocked(getConnection).mockImplementation(getConnectionSpy)
   })
 
   beforeEach(() => {
@@ -52,10 +63,23 @@ describe('PgConnection', () => {
   })
 
   it('Should create a new connection', async () => {
+    hasSpy.mockReturnValueOnce(false)
+
     await sut.connect()
 
     expect(createConnectionSpy).toHaveBeenCalledWith()
     expect(createConnectionSpy).toHaveBeenCalledTimes(1)
+    expect(createQueryRunnerSpy).toHaveBeenCalledWith()
+    expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1)
+  })
+
+  it('Should use an existing connection', async () => {
+    await sut.connect()
+
+    expect(createConnectionSpy).not.toHaveBeenCalledWith()
+    expect(createConnectionSpy).toHaveBeenCalledTimes(0)
+    expect(getConnectionSpy).toHaveBeenCalledWith()
+    expect(getConnectionSpy).toHaveBeenCalledTimes(1)
     expect(createQueryRunnerSpy).toHaveBeenCalledWith()
     expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1)
   })
