@@ -25,6 +25,7 @@
     "start": "node -r dotenv/config dist/main",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "prepare": "husky install",
+    "check": "npm-check -s -u",
     "debug": "nodemon -L --watch ./dist --inspect=0.0.0.0:9222 --nolazy ./dist/main/index.js",
     "dev": "ts-node-dev --respawn --transpile-only -r dotenv/config --inspect=0.0.0.0:9229 src/main",
     "lint": "eslint .",
