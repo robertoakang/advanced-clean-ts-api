@@ -1,6 +1,6 @@
 import { Controller } from '@/application/controllers'
 import { HttpResponse, ok } from '@/application/helpers'
-import { IValidator, ValidationBuilder as Builder } from '@/application/validation'
+import { ValidationBuilder as Builder, IValidator } from '@/application/validation'
 import { ChangeProfilePicture } from '@/domain/use-cases'
 
 type HttpRequest = { file?: { buffer: Buffer, mimeType: string }, userId: string }
@@ -11,7 +11,7 @@ export class SavePictureController extends Controller {
     super()
   }
 
-  async perform ({ file, userId }: HttpRequest): Promise<HttpResponse<Model>> {
+  override async perform ({ file, userId }: HttpRequest): Promise<HttpResponse<Model>> {
     const { initials, pictureUrl } = await this.changeProfilePicture({ id: userId, file })
     return ok({ initials, pictureUrl })
   }
