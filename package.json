@@ -1,6 +1,6 @@
 {
   "name": "advanced-clean-ts-api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Professional API using Clean Architecture and TDD.",
   "license": "GPL-3.0-or-later",
   "keywords": [
