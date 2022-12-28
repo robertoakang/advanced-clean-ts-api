@@ -12,6 +12,10 @@ describe('DeletePictureController', () => {
     sut = new DeletePictureController(changeProfilePicture)
   })
 
+  it('Should extend Controller', async () => {
+    expect(sut).toBeInstanceOf(Controller)
+  })
+
   it('Should call ChangeProfilePicture with correct input', async () => {
     await sut.handle({ userId: 'any_user_id' })
 
@@ -26,9 +30,5 @@ describe('DeletePictureController', () => {
       statusCode: 204,
       data: null
     })
-  })
-
-  it('Should extend Controller', async () => {
-    expect(sut).toBeInstanceOf(Controller)
   })
 })
