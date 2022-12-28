@@ -26,13 +26,13 @@ jobs:
         FB_CLIENT_SECRET: ${{ secrets.FB_CLIENT_SECRET }}
         FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        TYPEORM_CONNECTION: ${{ secrets.TYPEORM_CONNECTION }}
-        TYPEORM_HOST: ${{ secrets.TYPEORM_HOST }}
-        TYPEORM_PASSWORD: ${{ secrets.TYPEORM_PASSWORD }}
-        TYPEORM_DATABASE: ${{ secrets.TYPEORM_DATABASE }}
-        TYPEORM_PORT: ${{ secrets.TYPEORM_PORT }}
-        TYPEORM_ENTITIES: ${{ secrets.TYPEORM_ENTITIES }}
-        TYPEORM_USERNAME: ${{ secrets.TYPEORM_USERNAME }}
+        DB_CONNECTION: ${{ secrets.TYPEORM_CONNECTION }}
+        DB_HOST: ${{ secrets.TYPEORM_HOST }}
+        DB_PASSWORD: ${{ secrets.TYPEORM_PASSWORD }}
+        DB_DATABASE: ${{ secrets.TYPEORM_DATABASE }}
+        DB_PORT: ${{ secrets.TYPEORM_PORT }}
+        DB_ENTITIES: ${{ secrets.TYPEORM_ENTITIES }}
+        DB_USERNAME: ${{ secrets.TYPEORM_USERNAME }}
         AWS_S3_ACCESS_KEY: ${{ secrets.AWS_S3_ACCESS_KEY }}
         AWS_S3_SECRET: ${{ secrets.AWS_S3_SECRET }}
         AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
