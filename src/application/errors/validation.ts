@@ -8,10 +8,10 @@ export class RequiredFieldError extends Error {
   }
 }
 
-export class InvalidMimeType extends Error {
+export class InvalidMimeTypeError extends Error {
   constructor (allowed: string[]) {
     super(`Unsupported file type. Allowed types: ${allowed.join(',')}`)
-    this.name = 'InvalidMimeType'
+    this.name = 'InvalidMimeTypeError'
   }
 }
 

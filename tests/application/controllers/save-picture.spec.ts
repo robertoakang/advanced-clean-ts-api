@@ -1,5 +1,5 @@
 import { Controller, SavePictureController } from '@/application/controllers'
-import { InvalidMimeType, MaxFileSizeError, RequiredFieldError } from '@/application/errors'
+import { InvalidMimeTypeError, MaxFileSizeError, RequiredFieldError } from '@/application/errors'
 
 describe('SavePictureController', () => {
   let buffer: Buffer
@@ -57,7 +57,7 @@ describe('SavePictureController', () => {
 
     expect(httpResponse).toEqual({
       statusCode: 400,
-      data: new InvalidMimeType(['png', 'jpeg'])
+      data: new InvalidMimeTypeError(['png', 'jpeg'])
     })
   })
 
@@ -76,7 +76,7 @@ describe('SavePictureController', () => {
 
     expect(httpResponse).not.toEqual({
       statusCode: 400,
-      data: new InvalidMimeType(['png', 'jpeg'])
+      data: new InvalidMimeTypeError(['png', 'jpeg'])
     })
   })
 
@@ -85,7 +85,7 @@ describe('SavePictureController', () => {
 
     expect(httpResponse).not.toEqual({
       statusCode: 400,
-      data: new InvalidMimeType(['png', 'jpeg'])
+      data: new InvalidMimeTypeError(['png', 'jpeg'])
     })
   })
 
@@ -94,7 +94,7 @@ describe('SavePictureController', () => {
 
     expect(httpResponse).not.toEqual({
       statusCode: 400,
-      data: new InvalidMimeType(['png', 'jpeg'])
+      data: new InvalidMimeTypeError(['png', 'jpeg'])
     })
   })
 
