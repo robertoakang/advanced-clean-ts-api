@@ -9,24 +9,24 @@ import request from 'supertest'
 import { Repository, getConnection, getRepository } from 'typeorm'
 
 describe('User Routes', () => {
+  let backup: IBackup
+  let pgUserRepo: Repository<PgUser>
+
+  beforeAll(async () => {
+    const db = await makeFakeDb([PgUser])
+    backup = db.backup()
+    pgUserRepo = getRepository(PgUser)
+  })
+
+  afterAll(async () => {
+    await getConnection().close()
+  })
+
+  beforeEach(() => {
+    backup.restore()
+  })
+
   describe('DELETE /users/picture', () => {
-    let backup: IBackup
-    let pgUserRepo: Repository<PgUser>
-
-    beforeAll(async () => {
-      const db = await makeFakeDb([PgUser])
-      backup = db.backup()
-      pgUserRepo = getRepository(PgUser)
-    })
-
-    afterAll(async () => {
-      await getConnection().close()
-    })
-
-    beforeEach(() => {
-      backup.restore()
-    })
-
     it('Should return 403 if not autherization header is present', async () => {
       const { status } = await request(app)
         .delete('/api/users/picture')
@@ -47,6 +47,15 @@ describe('User Routes', () => {
         pictureUrl: undefined,
         initials: 'RK'
       })
+    })
+  })
+
+  describe('PUT /users/picture', () => {
+    it('Should return 403 if not autherization header is present', async () => {
+      const { status } = await request(app)
+        .put('/api/users/picture')
+
+      expect(status).toBe(403)
     })
   })
 })
