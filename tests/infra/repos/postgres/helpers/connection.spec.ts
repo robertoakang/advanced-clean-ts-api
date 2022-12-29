@@ -19,6 +19,7 @@ describe('PgConnection', () => {
   let getConnectionSpy: jest.Mock
   let closeSpy: jest.Mock
   let startTransactionSpy: jest.Mock
+  let releaseSpy: jest.Mock
   let sut: PgConnection
 
   beforeAll(() => {
@@ -28,8 +29,10 @@ describe('PgConnection', () => {
     })
     jest.mocked(getConnectionManager).mockImplementation(getConnectionManagerSpy)
     startTransactionSpy = jest.fn()
+    releaseSpy = jest.fn()
     createQueryRunnerSpy = jest.fn().mockReturnValue({
-      startTransaction: startTransactionSpy
+      startTransaction: startTransactionSpy,
+      release: releaseSpy
     })
     createConnectionSpy = jest.fn().mockResolvedValue({
       createQueryRunner: createQueryRunnerSpy
@@ -103,6 +106,23 @@ describe('PgConnection', () => {
     const promise = sut.openTransaction()
 
     expect(startTransactionSpy).not.toHaveBeenCalledWith()
+    await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
+  })
+
+  it('Should close transaction', async () => {
+    await sut.connect()
+    await sut.closeTransaction()
+
+    expect(releaseSpy).toHaveBeenCalledWith()
+    expect(releaseSpy).toHaveBeenCalledTimes(1)
+
+    await sut.disconnect()
+  })
+
+  it('Should return ConnectionNotFoundError on closeTransaction without existing connection', async () => {
+    const promise = sut.closeTransaction()
+
+    expect(releaseSpy).not.toHaveBeenCalledWith()
     await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
   })
 })
