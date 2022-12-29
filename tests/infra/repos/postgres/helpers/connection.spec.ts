@@ -1,7 +1,7 @@
 import { PgUser } from '@/infra/repos/postgres/entities'
-import { ConnectionNotFoundError, PgConnection } from '@/infra/repos/postgres/helpers'
+import { TransactionNotFoundError, PgConnection, ConnectionNotFoundError } from '@/infra/repos/postgres/helpers'
 
-import { createConnection, getConnection, getConnectionManager } from 'typeorm'
+import { createConnection, getConnection, getConnectionManager, getRepository } from 'typeorm'
 
 jest.mock('typeorm', () => ({
   Entity: jest.fn(),
@@ -9,7 +9,8 @@ jest.mock('typeorm', () => ({
   Column: jest.fn(),
   createConnection: jest.fn(),
   getConnection: jest.fn(),
-  getConnectionManager: jest.fn()
+  getConnectionManager: jest.fn(),
+  getRepository: jest.fn()
 }))
 
 describe('PgConnection', () => {
@@ -54,6 +55,7 @@ describe('PgConnection', () => {
       close: closeSpy
     })
     jest.mocked(getConnection).mockImplementation(getConnectionSpy)
+    jest.mocked(getRepository).mockImplementation(getRepositorySpy)
   })
 
   beforeEach(() => {
@@ -73,8 +75,6 @@ describe('PgConnection', () => {
 
     expect(createConnectionSpy).toHaveBeenCalledWith()
     expect(createConnectionSpy).toHaveBeenCalledTimes(1)
-    expect(createQueryRunnerSpy).toHaveBeenCalledWith()
-    expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1)
   })
 
   it('Should use an existing connection', async () => {
@@ -83,8 +83,6 @@ describe('PgConnection', () => {
     expect(createConnectionSpy).not.toHaveBeenCalledWith()
     expect(getConnectionSpy).toHaveBeenCalledWith()
     expect(getConnectionSpy).toHaveBeenCalledTimes(1)
-    expect(createQueryRunnerSpy).toHaveBeenCalledWith()
-    expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1)
   })
 
   it('Should close connection', async () => {
@@ -108,6 +106,8 @@ describe('PgConnection', () => {
 
     expect(startTransactionSpy).toHaveBeenCalledWith()
     expect(startTransactionSpy).toHaveBeenCalledTimes(1)
+    expect(createQueryRunnerSpy).toHaveBeenCalledWith()
+    expect(createQueryRunnerSpy).toHaveBeenCalledTimes(1)
 
     await sut.disconnect()
   })
@@ -116,11 +116,13 @@ describe('PgConnection', () => {
     const promise = sut.openTransaction()
 
     expect(startTransactionSpy).not.toHaveBeenCalledWith()
+    expect(createQueryRunnerSpy).not.toHaveBeenCalledWith()
     await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
   })
 
   it('Should close transaction', async () => {
     await sut.connect()
+    await sut.openTransaction()
     await sut.closeTransaction()
 
     expect(releaseSpy).toHaveBeenCalledWith()
@@ -129,15 +131,16 @@ describe('PgConnection', () => {
     await sut.disconnect()
   })
 
-  it('Should return ConnectionNotFoundError on closeTransaction without existing connection', async () => {
+  it('Should return TransactionNotFoundError on closeTransaction without existing transaction', async () => {
     const promise = sut.closeTransaction()
 
     expect(releaseSpy).not.toHaveBeenCalledWith()
-    await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
+    await expect(promise).rejects.toThrow(new TransactionNotFoundError())
   })
 
   it('Should commit transaction', async () => {
     await sut.connect()
+    await sut.openTransaction()
     await sut.commit()
 
     expect(commitTransactionSpy).toHaveBeenCalledWith()
@@ -146,15 +149,16 @@ describe('PgConnection', () => {
     await sut.disconnect()
   })
 
-  it('Should return ConnectionNotFoundError on commit without existing connection', async () => {
+  it('Should return TransactionNotFoundError on commit without existing transaction', async () => {
     const promise = sut.commit()
 
     expect(commitTransactionSpy).not.toHaveBeenCalledWith()
-    await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
+    await expect(promise).rejects.toThrow(new TransactionNotFoundError())
   })
 
   it('Should rollback transaction', async () => {
     await sut.connect()
+    await sut.openTransaction()
     await sut.rollback()
 
     expect(rollbackTransactionSpy).toHaveBeenCalledWith()
@@ -163,11 +167,23 @@ describe('PgConnection', () => {
     await sut.disconnect()
   })
 
-  it('Should return ConnectionNotFoundError on rollback without existing connection', async () => {
+  it('Should return TransactionNotFoundError on rollback without existing transaction', async () => {
     const promise = sut.rollback()
 
     expect(rollbackTransactionSpy).not.toHaveBeenCalledWith()
-    await expect(promise).rejects.toThrow(new ConnectionNotFoundError())
+    await expect(promise).rejects.toThrow(new TransactionNotFoundError())
+  })
+
+  it('Should get repository from transaction', async () => {
+    await sut.connect()
+    await sut.openTransaction()
+    const repository = await sut.getRepository(PgUser)
+
+    expect(getRepositorySpy).toHaveBeenCalledWith(PgUser)
+    expect(getRepositorySpy).toHaveBeenCalledTimes(1)
+    expect(repository).toBe('any_repo')
+
+    await sut.disconnect()
   })
 
   it('Should get repository', async () => {
@@ -181,7 +197,7 @@ describe('PgConnection', () => {
     await sut.disconnect()
   })
 
-  it('Should return ConnectionNotFoundError on getRepository without existing connection', async () => {
+  it('Should return ConnectionNotFoundError on getRepository without existing transaction', async () => {
     expect(getRepositorySpy).not.toHaveBeenCalledWith()
     expect(() => sut.getRepository(PgUser)).toThrow(new ConnectionNotFoundError())
   })
